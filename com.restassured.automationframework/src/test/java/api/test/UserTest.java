@@ -11,6 +11,7 @@ import io.restassured.response.Response;
 public class UserTest 
 {
 	User user ;
+	Response resp;
 	
 	@BeforeClass
 	public void setUp()
@@ -30,7 +31,7 @@ public class UserTest
 	@Test(priority=1,description="Creates a user emulating POST API Call")
 	public void testCreateUser()
 	{
-		Response resp = UserEndpointsFile.createUserMethod(user);
+		resp = UserEndpointsFile.createUserMethod(user);
 		resp.then().log().all();//log all response
 		
 		Assert.assertEquals(resp.getStatusCode(),200);		
@@ -41,13 +42,16 @@ public class UserTest
 	public void testUpdateUser()
 	{
 		//String updUser
-		UserEndpointsFile.updateUserMethod(user, null);
+		resp=UserEndpointsFile.updateUserMethod(user, null);
 	}
 	
 	@Test(priority=3,description="Get a user emulating GET API Call")
 	public void testGetUser()
 	{
+	  	resp = UserEndpointsFile.getUserMethod(this.user.getUsername());
+	  	resp.then().log().all();
 	  	
+	  	Assert.assertEquals(resp.getStatusCode(), 200);
 	}
 
 }
